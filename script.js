@@ -8,24 +8,6 @@ function generateLeftSidebar() {
             </div>
             
             <nav class="nav-menu">
-
-            // update any auth-action buttons to show Login/Logout
-            function updateAuthButtons() {
-                const elems = document.querySelectorAll('.auth-action');
-                const token = getToken();
-                elems.forEach(el => {
-                    if (token) {
-                        el.textContent = 'Logout';
-                        el.onclick = (e) => { e.preventDefault(); localStorage.removeItem(apiTokenKey); location.reload(); };
-                    } else {
-                        el.textContent = 'Login';
-                        el.onclick = (e) => { e.preventDefault(); window.location = 'login.html'; };
-                    }
-                });
-            }
-
-            updateAuthButtons();
-                <a href="index.html" class="nav-item active">
                     <span class="icon">🏠</span> Home
                 </a>
                 <a href="explore.html" class="nav-item">
@@ -176,7 +158,7 @@ function generateFooterNav() {
 // Reel Container Generator
 function generateReelContainer(reelData = {}) {
             
-            <nav class="nav-menu">
+           ` <nav class="nav-menu">
                         <h3 class="username">${username}</h3>
                         <p class="user-caption">${caption}</p>
                         <p class="music-info">
@@ -227,7 +209,6 @@ function generateReelContainer(reelData = {}) {
 }
 
 
-
 // Profile Page Generator
 function generateProfile(profileData = {}) {
     const {
@@ -260,7 +241,7 @@ function generateProfile(profileData = {}) {
     } = profileData;
 
     return 
-        ~<div class="profile-container">
+        `<div class="profile-container">
             <!-- Profile Header -->
             <div class="profile-header">
                 <div class="profile-top">
