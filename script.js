@@ -8,6 +8,23 @@ function generateLeftSidebar() {
             </div>
             
             <nav class="nav-menu">
+
+            // update any auth-action buttons to show Login/Logout
+            function updateAuthButtons() {
+                const elems = document.querySelectorAll('.auth-action');
+                const token = getToken();
+                elems.forEach(el => {
+                    if (token) {
+                        el.textContent = 'Logout';
+                        el.onclick = (e) => { e.preventDefault(); localStorage.removeItem(apiTokenKey); location.reload(); };
+                    } else {
+                        el.textContent = 'Login';
+                        el.onclick = (e) => { e.preventDefault(); window.location = 'login.html'; };
+                    }
+                });
+            }
+
+            updateAuthButtons();
                 <a href="index.html" class="nav-item active">
                     <span class="icon">🏠</span> Home
                 </a>
@@ -158,26 +175,8 @@ function generateFooterNav() {
 
 // Reel Container Generator
 function generateReelContainer(reelData = {}) {
-    const {
-        imageUrl = 'https://via.placeholder.com/500x800/2d3748/ffffff?text=Dance+Video',
-        username = 'emma_dance',
-        avatar = 'https://via.placeholder.com/40/db2777/ffffff?text=ED',
-        caption = 'Campus dance performance 🔥✨ #CollegeDance',
-        music = 'Blinding Lights - The Weeknd',
-        likes = '12.4K',
-        comments = '234'
-    } = reelData;
-
-    return `
-        <div class="reel-container">
-            <!-- Background Image/Video -->
-            <img src="${imageUrl}" alt="reel video" class="reel-media">
             
-            <!-- Profile Section (Bottom Left) -->
-            <div class="profile-section">
-                <div class="user-profile">
-                    <img src="${avatar}" alt="${username}" class="user-avatar">
-                    <div class="user-info">
+            <nav class="nav-menu">
                         <h3 class="username">${username}</h3>
                         <p class="user-caption">${caption}</p>
                         <p class="music-info">
@@ -260,8 +259,8 @@ function generateProfile(profileData = {}) {
         ]
     } = profileData;
 
-    return `
-        <div class="profile-container">
+    return 
+        ~<div class="profile-container">
             <!-- Profile Header -->
             <div class="profile-header">
                 <div class="profile-top">
