@@ -708,3 +708,75 @@ registerBtn.addEventListener("click", () => {
 loginBtn.addEventListener("click", () => {
   container.classList.remove("active");
 });
+
+// --- API helpers and auth wiring ---
+const apiTokenKey = 'app_token';
+function getToken() {
+    return localStorage.getItem(apiTokenKey);
+}
+
+function apiFetch(url, opts = {}) {
+    opts.headers = opts.headers || {};
+    if (!(opts.body instanceof FormData)) opts.headers['Content-Type'] = 'application/json';
+    const token = getToken();
+    if (token) opts.headers['Authorization'] = 'Bearer ' + token;
+    return fetch(url, opts);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Signup form (create account)
+    const signupForm = document.querySelector('.sign-up form');
+    if (signupForm) {
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const inputs = signupForm.querySelectorAll('input');
+            const username = inputs[0].value.trim();
+            const email = inputs[1].value.trim();
+            const password = inputs[2].value;
+            try {
+                const res = await fetch('/api/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password })
+                });
+                if (!res.ok) {
+                    const err = await res.json().catch(()=>({error:'Signup failed'}));
+                    return alert(err.error || 'Signup failed');
+                }
+                const data = await res.json();
+                localStorage.setItem(apiTokenKey, data.token);
+                window.location = '/index.html';
+            } catch (err) {
+                console.error(err);
+                alert('Signup error');
+            }
+        });
+    }
+
+    // Login form (intercept default POST)
+    const loginForm = document.querySelector('.sign-in form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = loginForm.querySelector('input[name="email"]').value.trim();
+            const password = loginForm.querySelector('input[name="password"]').value;
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                if (!res.ok) {
+                    const err = await res.json().catch(()=>({error:'Login failed'}));
+                    return alert(err.error || 'Login failed');
+                }
+                const data = await res.json();
+                localStorage.setItem(apiTokenKey, data.token);
+                window.location = '/index.html';
+            } catch (err) {
+                console.error(err);
+                alert('Login error');
+            }
+        });
+    }
+});
