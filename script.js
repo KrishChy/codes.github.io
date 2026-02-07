@@ -35,6 +35,7 @@ function generateLeftSidebar() {
                 <div>
                     <h4>Alex Johnson</h4>
                     <p>@alexj</p>
+                    <a href="login.html" class="btn">Login</a>
                 </div>
             </div>
         </aside>
