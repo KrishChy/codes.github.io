@@ -25,6 +25,7 @@ function generateLeftSidebar() {
                 </a>
                 <a href="profile.html" class="nav-item">
                     <span class="icon">👤</span> Profile
+                    <a href="login.html" class="btn">Login</a>
                 </a>
             </nav>
             
